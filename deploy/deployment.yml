@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot
+  namespace: app
+  labels:
+    argocd.argoproj.io/instance: spring-boot
+    role: admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-boot
+  template:
+    metadata:
+      labels:
+        app: spring-boot
+    spec:
+      containers:
+      - name: spring-boot
+        image: docker.io/traipoap/spring:latest
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 200m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+      automountServiceAccountToken: false
+      imagePullSecrets:
+      - name: docker-registry
+      serviceAccountName: container-registry
+      restartPolicy: Always

@@ -1,0 +1,13 @@
+services:
+  spring-boot:
+    container_name: spring-boot
+    image: docker.io/traipoap/spring:latest
+    build: 
+      context: .
+    expose:
+      - 8080
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true
